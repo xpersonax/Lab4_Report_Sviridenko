@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RailwayErp.MvvmDemo.ViewModels"
+             x:Class="RailwayErp.MvvmDemo.Views.RouteEditPage"
+             x:DataType="vm:RouteEditViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="10">
+
+            <Label Text="Назва маршруту" />
+            <Entry Text="{Binding Name}" Placeholder="Напр., Інтерсіті 743" />
+
+            <Label Text="Пункт відправлення" />
+            <Entry Text="{Binding Origin}" Placeholder="Київ-Пасажирський" />
+
+            <Label Text="Пункт призначення" />
+            <Entry Text="{Binding Destination}" Placeholder="Львів" />
+
+            <Label Text="Дата відправлення" />
+            <DatePicker Date="{Binding DepartureDate}" />
+
+            <Label Text="Час відправлення" />
+            <TimePicker Time="{Binding DepartureTimeOfDay}" />
+
+            <Label Text="Машиніст (ПІБ)" />
+            <Entry Text="{Binding DriverName}" />
+
+            <Label Text="Номер службового посвідчення (шифрується перед збереженням)" />
+            <Entry Text="{Binding DriverDocumentNumber}" Placeholder="АВ123456" />
+
+            <Label Text="{Binding ErrorMessage}" TextColor="Red" />
+
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Зберегти" Command="{Binding SaveCommand}" />
+                <Button Text="Скасувати" Command="{Binding CancelCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

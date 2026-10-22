@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RailwayErp.MvvmDemo.ViewModels"
+             xmlns:model="clr-namespace:RailwayErp.MvvmDemo.Models"
+             x:Class="RailwayErp.MvvmDemo.MainPage"
+             x:DataType="vm:TrainRouteListViewModel"
+             Title="Маршрути поїздів">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="6">
+            <HorizontalStackLayout Spacing="12">
+                <Label Text="Режим офлайн (симуляція)" VerticalOptions="Center" />
+                <Switch IsToggled="{Binding IsOfflineMode}" />
+            </HorizontalStackLayout>
+            <Label Text="{Binding StatusText}" FontAttributes="Bold" />
+            <Label Text="{Binding LastSyncText}" FontSize="12" />
+        </VerticalStackLayout>
+
+        <FlexLayout Grid.Row="1" Wrap="Wrap" JustifyContent="Start">
+            <Button Text="Додати маршрут" Command="{Binding AddCommand}" Margin="0,0,8,8" />
+            <Button Text="Оновити список" Command="{Binding LoadCommand}" Margin="0,0,8,8" />
+            <Button Text="Синхронізувати" Command="{Binding SyncNowCommand}" Margin="0,0,8,8" />
+            <Button Text="Імітувати зміну на сервері"
+                    Command="{Binding SimulateServerChangeCommand}"
+                    IsVisible="{Binding CanSimulateServer}"
+                    Margin="0,0,8,8" />
+        </FlexLayout>
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Routes}">
+            <CollectionView.EmptyView>
+                <Label Text="Маршрутів ще немає. Натисніть «Додати маршрут»."
+                       HorizontalOptions="Center" Margin="0,24" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:TrainRoute">
+                    <Border Padding="12" Margin="0,0,0,8" StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" />
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Origin}" />
+                                            <Span Text=" → " />
+                                            <Span Text="{Binding Destination}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Text="{Binding DepartureTime, StringFormat='Відправлення: {0:dd.MM.yyyy HH:mm}'}"
+                                       FontSize="12" />
+                                <Label Text="{Binding DriverName, StringFormat='Машиніст: {0}'}" FontSize="12" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Button Text="Редагувати"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TrainRouteListViewModel}}, Path=EditCommand}"
+                                        CommandParameter="{Binding .}" />
+                                <Button Text="Видалити"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TrainRouteListViewModel}}, Path=DeleteCommand}"
+                                        CommandParameter="{Binding .}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
